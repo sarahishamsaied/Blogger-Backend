@@ -7,6 +7,6 @@ const commentSchema = new mongoose.Schema({
         type:String
     },
     nVotes:Number
-});
+},{timestamps:true});
 const commentModel = mongoose.model("comments",commentSchema);
 module.exports = commentModel;

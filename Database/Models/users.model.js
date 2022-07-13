@@ -18,6 +18,6 @@ const userSchema = mongoose.Schema({
     },
     confirmPassword:String,
     profilePic:String
-})
+},{timestamps:true})
 const userModel = mongoose.model("users",userSchema)
 module.exports = userModel
