@@ -7,7 +7,12 @@ const signUp = async(req,res)=>{
         email,
         username,
         password,
-        confirmPassword } = req.body;
+        confirmPassword,
+        bio,
+        location,
+        interests,
+        education,
+        work } = req.body;
         try{
             const userInstance = new userModel({
                 firstName,
@@ -15,7 +20,14 @@ const signUp = async(req,res)=>{
                 username,
                 email,
                 password,
-                confirmPassword
+                confirmPassword,
+                bio,
+                location,
+                interests,
+                education,
+                work,
+                following:[],
+                followers:[]
             })
         const user = await userInstance.save();
         res.json({
@@ -37,12 +49,18 @@ const signIn = async(req,res)=>{
         });
         if(user)
         {
-            const {firstName, lastName, email, username} = user; 
+            const {firstName, lastName, email, username, location, interests, education, work , followers , following} = user; 
             const userData = {
                 firstName,
                 lastName,
                 email,
-                username
+                username,
+                location,
+                interests,
+                education,
+                work,
+                followers, 
+                following
             }
             if(user.password === password)
             res.json({
@@ -73,7 +91,7 @@ const getUserByUsername = async(req,res)=>{
     const {username} = req.params
     const user = await userModel.findOne({
         username
-    }).select("username email firstName lastName");
+    }).select("username email firstName lastName work bio education interests location followers following");
     if(user)
     res.json({
         message:'success',
@@ -85,7 +103,7 @@ const getUserByUsername = async(req,res)=>{
     })
 }
 const getAllUsers = async(req,res)=>{
-    const users = await userModel.find({}).select("username email firstName lastName");
+    const users = await userModel.find({}).select("username email firstName lastName work bio education interests location followers following");
     console.log(users)
     if(users.length)
     res.json({

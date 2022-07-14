@@ -9,9 +9,12 @@ const blogSchema = new mongoose.Schema({
         required:true
     },
     nComments:Number,
-    nVotes:Number,
+    nUpVotes:Number,
+    nDownVotes:Number,
     category:String,
-    body:String
+    body:String,
+    tags:[String],
+    blogImage:String
 },{timestamps:true});
 const blogModel = mongoose.model("blogs",blogSchema);
 module.exports = blogModel

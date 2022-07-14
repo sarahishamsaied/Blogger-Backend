@@ -63,13 +63,14 @@ const getBlog = async(req,res)=>{
 const editBlog = async(req,res)=>{
         const {id} = req.params;
         console.log(id)
-        const {body,author,category,title} = req.body;
+        const {body,author,category,title,tags} = req.body;
         console.log(body,author,category,title)
         const editedBlog = await blogModel.findByIdAndUpdate(id,{
             body,
             author,
             category,
-            title
+            title,
+            tags
         },{new:true});
         console.log(editedBlog)
         res.json({
@@ -82,7 +83,7 @@ const searchBlogs = async(req,res)=>{
 
 }
 const postBlog = async(req,res)=>{
-    const {body,author,category,title} = req.body;
+    const {body,author,category,title,tags,blogImage} = req.body;
     try{
         const blogInstance = new blogModel({
             body,
@@ -90,7 +91,9 @@ const postBlog = async(req,res)=>{
             category,
             title,
             nVotes:0,
-            nComments:0
+            nComments:0,
+            tags,
+            blogImage
         })
         const addedBlog = await blogInstance.save();
         res.json({

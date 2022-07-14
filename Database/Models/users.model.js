@@ -17,7 +17,16 @@ const userSchema = mongoose.Schema({
         type:String
     },
     confirmPassword:String,
-    profilePic:String
+    profilePic:String,
+    following:[{type:mongoose.Types.ObjectId,ref:"users"}],
+    followers:[{type:mongoose.Types.ObjectId,ref:"users"}],
+    bio:String,
+    location:String,
+    interests:[String],
+    readingList:[{type:mongoose.Types.ObjectId,ref:"blogs"}],
+    education:String,
+    work:String
+
 },{timestamps:true})
 const userModel = mongoose.model("users",userSchema)
 module.exports = userModel
