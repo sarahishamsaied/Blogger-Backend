@@ -1,13 +1,25 @@
-const blogModel = require("../../../Database/Models/blog.model")
+const { format } = require("path");
+const blogModel = require("../../../Database/Models/blog.model");
+const commentModel = require("../../../Database/Models/comment.model");
 const getAllBlogs = async(req,res)=>{
     try{
         const blogs = await blogModel.find({}).populate([{
             path:"author",
             select:"username firstName lastName email"
-        }]);
+        }]).cursor();
+        const allBlogs = [];
+        for(let doc = await blogs.next();doc!=null;doc = await blogs.next()){
+            let comments = await commentModel.find({
+                blogId:doc._id
+            });
+            allBlogs.push({
+                ...doc._doc,
+                comments
+            });
+        }
         res.json({
             message:'success',
-            data:blogs
+            data:allBlogs   
         })
     }
     catch(e){
@@ -20,15 +32,25 @@ const getAllBlogs = async(req,res)=>{
 const getAuthorBlogs = async(req,res)=>{
     try{
         const {authId} = req.params;
-        const blogs = await blogModel.find({
+        const blogs = blogModel.find({
             author:authId
         }).populate([{
             path:'author',
             select:'username email firstName lastName'
-        }])
+        }]).cursor();
+        let blogData = [];
+        for(let doc = await blogs.next();doc!=null;doc = await blogs.next()){
+            const comments = await commentModel.find({
+                blogId:doc._id
+            });
+            blogData.push({
+                ...doc._doc,
+                comments
+            })
+        }
         res.json({
             message:'success',
-            data:blogs
+            data:blogData
         })
     }catch(e){
         console.log(e.message);
@@ -52,12 +74,20 @@ const deleteBlog = async(req,res)=>{
 const getBlog = async(req,res)=>{
     const {id} = req.params;
     console.log(id)
-    const blog = await blogModel.findOne({
+    const blogCursor = blogModel.findOne({
         _id:id
-    })
+    }).cursor();
+    let blogData = [];
+    for(let doc = await blogCursor.next();doc!=null;doc = await blogCursor.next()){
+        const comments = await commentModel.find({blogId:doc._id})
+        blogData.push({
+            comments,
+            ...doc._doc
+        })
+    }
     res.json({
         message:'success',
-        data:blog
+        data:blogData
     })
 }
 const editBlog = async(req,res)=>{
