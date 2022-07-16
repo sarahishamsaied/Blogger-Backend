@@ -4,8 +4,8 @@ const verifyEmail = async (email,message) =>{
     let transporter = nodemailer.createTransport({
         service : "gmail",
         auth:{
-            user:"bloggerapp0@gmail.com",
-            pass:"xmerjvgowjqzmurh"
+            user:process.env.APP_USER,
+            pass:APP_PASSWORD
         },
         tls: {
             rejectUnauthorized: false
