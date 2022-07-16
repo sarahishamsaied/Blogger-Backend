@@ -16,6 +16,11 @@ const signUpValidation = {
             "string.empty":'Email is not allowed to be empty',
             "string.email":'Invalid email format'
         }),
+        bio:Joi.string(),
+        location:Joi.string(),
+        work:Joi.string(),
+        education:Joi.string(),
+        interests:Joi.array()
     })
 }
 module.exports = {signUpValidation}
