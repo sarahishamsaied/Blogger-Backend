@@ -14,7 +14,6 @@ const userSchema = mongoose.Schema({
         type:String
     },
     password:{
-        required:true,
         type:String
     },
     confirmPassword:String,
@@ -30,7 +29,11 @@ const userSchema = mongoose.Schema({
     isConfirmed:{
         type:Boolean,
         default:false
-    }
+    },
+    blogs:[{
+        type:mongoose.Types.ObjectId,
+        ref:'blogs'
+    }]
 
 },{timestamps:true});
 userSchema.pre("save",function(next){

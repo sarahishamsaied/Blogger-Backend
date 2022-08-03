@@ -5,7 +5,7 @@ const verifyEmail = async (email,message) =>{
         service : "gmail",
         auth:{
             user:process.env.APP_USER,
-            pass:APP_PASSWORD
+            pass:process.env.APP_PASSWORD
         },
         tls: {
             rejectUnauthorized: false

@@ -39,7 +39,20 @@ const blogSchema = new mongoose.Schema({
     body:String,
     tags:[String],
     blogImage:String,
-    comments:[commentSchema],
+    comments:[
+        {
+            body:String,
+            blogId:{
+                type:mongoose.Schema.Types.ObjectId,
+                ref:"blogs"
+            },
+            author: {
+                type:mongoose.Types.ObjectId,
+                ref: "users"
+            }
+        }
+
+    ],
     upVotes:[voteSchema],
     downVotes:[voteSchema]
 },{timestamps:true});

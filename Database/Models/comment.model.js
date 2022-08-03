@@ -10,4 +10,4 @@ const commentSchema = new mongoose.Schema({
     nDownVotes:Number
 },{timestamps:true});
 const commentModel = mongoose.model("comments",commentSchema);
-module.exports = {commentModel};
+module.exports = commentModel;

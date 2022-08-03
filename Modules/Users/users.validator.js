@@ -12,7 +12,7 @@ const signUpValidation = {
         }),
         confirmPassword:Joi.ref("password"),
         username:Joi.string().required().pattern(new RegExp("[^-\s]")),
-        email:Joi.string().email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] }}).messages({
+        email:Joi.string().email({ minDomainSegments: 2,}).messages({
             "string.empty":'Email is not allowed to be empty',
             "string.email":'Invalid email format'
         }),

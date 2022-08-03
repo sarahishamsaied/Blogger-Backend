@@ -2,12 +2,13 @@ const blogModel = require("../../../Database/Models/blog.model");
 const commentModel = require("../../../Database/Models/comment.model");
 const getComments = async(req,res)=>{
     const {blogId} = req.params;
-    const comments = await commentModel.find({
-        blogId
-    });
+    const foundBlog = await blogModel.findOne({
+        _id:blogId
+    }).select("comments").populate("comments.author")
+    const {comments} = foundBlog;
     res.json({
         message:"success",
-        comments
+        data:comments
     })
 }
 const postComment = async (req,res)=>{
@@ -40,8 +41,11 @@ const deleteComment = async(req,res)=>{
     const foundBlog = await blogModel.findById(blogId);
     if(foundBlog){
         const foundComment = foundBlog.comments.find((comment,index)=>{
+            console.log(comment._id)
+            console.log(id)
             if(comment._id == id)
             {
+                
                 if(comment.author == author)
                 {
                     currentIndex = index;
